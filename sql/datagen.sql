@@ -1,35 +1,29 @@
-CREATE TABLE s1 (i1 int [], v1 struct<v2 int, v3 double>, t1 timestamp, z1 timestamptz, c1 varchar)
+CREATE TABLE inf_gen (
+    timestamp timestamp,
+    user_id varchar,
+    latlong struct<latitude double, longitude double>,
+)
 WITH (
-     connector = 'datagen',
+    connector = 'datagen',
 
-     fields.i1.length = '3',
-     fields.i1._.kind = 'sequence',
-     fields.i1._.start = '1',
-     fields.i1._.end = '15',
+    fields.timestamp.kind = 'random',
+    -- fields.timestamp.max_past = '1 day',
+    fields.timestamp.max_past_mode = 'relative',
+    fields.timestamp.seed = '1',
 
-     fields.v1.v2.kind = 'random',
-     fields.v1.v2.min = '-10',
-     fields.v1.v2.max = '10',
-     fields.v1.v2.seed = '1',
+    fields.user_id.kind = 'random',
+    fields.user_id.length = '1',
+    fields.user_id.seed = '2',
 
-     fields.v1.v3.kind = 'random',
-     fields.v1.v3.min = '15',
-     fields.v1.v3.max = '55',
-     fields.v1.v3.seed = '1',
+    fields.latlong.latitude.kind = 'random',
+    fields.latlong.latitude.min = '20.42',
+    fields.latlong.latitude.max = '45.55',
+    fields.latlong.latitude.seed = '3',
 
-     fields.t1.kind = 'random',
-     fields.t1.max_past = '2h 37min',
-     fields.t1.max_past_mode = 'relative',
-     fields.t1.seed = '3',
+    fields.latlong.longitude.kind = 'random',
+    fields.latlong.longitude.min = '122.93',
+    fields.latlong.longitude.max = '153.98',
+    fields.latlong.longitude.seed = '4',
 
-     fields.z1.kind = 'random',
-     fields.z1.max_past = '2h 37min',
-     fields.z1.max_past_mode = 'relative',
-     fields.z1.seed = '3',
-
-     fields.c1.kind = 'random',
-     fields.c1.length = '16',
-     fields.c1.seed = '3',
-
-     datagen.rows.per.second = '10'
- ) FORMAT PLAIN ENCODE JSON;
+    datagen.rows.per.second = '1'
+ );
